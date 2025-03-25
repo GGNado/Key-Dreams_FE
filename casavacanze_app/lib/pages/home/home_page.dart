@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:casavacanze_app/core/app_bar.dart';
 import 'package:casavacanze_app/pages/home/home_app_bar.dart';
+import 'package:casavacanze_app/pages/home/home_bottom_app_bar.dart';
 import 'package:casavacanze_app/pages/home/home_content.dart';
 import 'package:casavacanze_app/pages/login/login_page.dart';
 import 'package:casavacanze_app/service/http_login.dart';
 import 'package:casavacanze_app/service/token.dart' as TokenStorage;
-import 'package:casavacanze_app/widget/house_card.dart';
+import 'package:casavacanze_app/pages/home/house_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:http/http.dart' as http;
+
+import '../user/user_profile.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +21,7 @@ void main() {
 
 class CasaVacanzeApp extends StatelessWidget {
   const CasaVacanzeApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +42,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<HomeContentState> homeContentKey = GlobalKey<HomeContentState>();
   final ScrollController _scrollController = ScrollController();
-  bool _isAppBarVisible = true;
+  List<Map<String, dynamic>> houses = [];
+  List<Map<String, dynamic>> caseFiltrate = [];
   int _selectedIndex = 0;
+  bool _isAppBarVisible = true;
 
   @override
   void initState() {
@@ -48,7 +58,22 @@ class _HomePageState extends State<HomePage> {
         setState(() => _isAppBarVisible = false);
       } else if (direction == ScrollDirection.forward && !_isAppBarVisible) {
         setState(() => _isAppBarVisible = true);
+        debugPrint("AppBar visibile");
       }
+    });
+  }
+
+  void onClickHome(){
+    print("Click sulla home");
+    setState(() {
+      _selectedIndex = 0;
+    });
+  }
+
+  void onClickProfilo(){
+    setState(() {
+      print("Click sulla profilo");
+      _selectedIndex = 1;
     });
   }
 
@@ -60,12 +85,52 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: HomeContent(scrollController: _scrollController)),
-      bottomNavigationBar: AnimatedSlide(
-        duration: Duration(milliseconds: 300),
-        offset: _isAppBarVisible ? Offset.zero : Offset(0, 1),
-        child: HomeBottomAppBar(
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Color(0xFFEE7724), // Arancione acceso
+            Color(0xFFD8363A), // Rosso scuro
+            Color(0xFFDD3675), // Rosa acceso
+            Color(0xFFB44593), // Viola intenso
+          ],
+        ),
+      ),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: _isAppBarVisible ? 1.0 : 0.0,
+            child: HomeAppBar(onSearch: (String query) {
+              homeContentKey.currentState?.filterHouses(query);
+            }),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        body: AnimatedSwitcher(
+          duration: Duration(milliseconds: 400),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(
+              scale: animation,
+              child: RotationTransition(
+                turns: Tween<double>(begin: 0.05, end: 0.0).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          child: _selectedIndex == 0
+              ? Center(
+                  key: ValueKey(0),
+                  child: HomeContent(key: homeContentKey, scrollController: _scrollController),
+                )
+              : const UserProfileContent(key: ValueKey(1)),
+        ),
+        bottomNavigationBar: HomeBottomAppBar(
+          onClickProfilo: onClickProfilo,
+          onClickHome: onClickHome,
           currentIndex: _selectedIndex,
           onTabSelected: (index) {
             setState(() {

@@ -1,96 +1,67 @@
-import 'package:casavacanze_app/service/token.dart';
-import 'package:casavacanze_app/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
 
-class HomeBottomAppBar extends StatelessWidget {
-  final Function(int) onTabSelected;
-  final int currentIndex;
+class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final Function(String) onSearch;
 
-  const HomeBottomAppBar({
-    Key? key,
-    required this.onTabSelected,
-    required this.currentIndex,
-  }) : super(key: key);
+  const HomeAppBar({super.key, required this.onSearch});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 90,
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFEE7724),
-              Color(0xFFD8363A),
-              Color(0xFFDD3675),
-              Color(0xFFB44593),
-            ],
-          ),
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: _isSearching
+          ? TextField(
+        controller: _searchController,
+        autofocus: true,
+        style: const TextStyle(color: Colors.white),
+        decoration: const InputDecoration(
+          hintText: 'Cerca...',
+          hintStyle: TextStyle(color: Colors.white70),
+          border: InputBorder.none,
         ),
-        child: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          color: Colors.transparent,
-          elevation: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Expanded(
-                child: InkWell(
-                  onTap: () => onTabSelected(0),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.home,
-                        color:
-                            currentIndex == 0 ? Colors.white : Colors.white70,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () => onTabSelected(1),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color:
-                            currentIndex == 1 ? Colors.white : Colors.white70,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () async {
-                    await clearToken();
-                    if (context.mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginPage()),
-                      );
-                    }
-                  },
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.logout, color: Colors.white70)],
-                  ),
-                ),
-              ),
-            ],
+        onChanged: widget.onSearch,
+      )
+          : const Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Key & Dreams',
+          style: TextStyle(
+            fontFamily: 'PlayfairDisplay',
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
           ),
         ),
       ),
+      actions: [
+        IconButton(
+          icon: Icon(
+            _isSearching ? Icons.close : Icons.search,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              _isSearching = !_isSearching;
+              if (!_isSearching) {
+                _searchController.clear();
+                widget.onSearch('');
+              }
+            });
+          },
+        ),
+      ],
     );
   }
 }

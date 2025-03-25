@@ -1,4 +1,4 @@
-import 'package:casavacanze_app/widget/login_form.dart';
+import 'package:casavacanze_app/pages/login/login_form.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {

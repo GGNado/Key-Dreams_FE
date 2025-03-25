@@ -1,10 +1,11 @@
-import 'package:casavacanze_app/widget/house_card.dart';
+import 'package:casavacanze_app/service/http_urls.dart';
+import 'package:casavacanze_app/pages/home/house_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String apiCase = "/api/casaVacanza/all";
-const String host = "http://172.16.218.64:8080";
+const String apiCase = HttpUrls.caseAPI;
+const String host = HttpUrls.host;
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key, required this.scrollController});
@@ -12,11 +13,12 @@ class HomeContent extends StatefulWidget {
   final ScrollController scrollController;
 
   @override
-  State<HomeContent> createState() => _HomeContentState();
+  State<HomeContent> createState() => HomeContentState();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class HomeContentState extends State<HomeContent> {
   List<Map<String, dynamic>> houses = [];
+  List<Map<String, dynamic>> filteredHouses = [];
   bool isLoading = true;
 
   @override
@@ -34,6 +36,7 @@ class _HomeContentState extends State<HomeContent> {
       final List<dynamic> jsonData = jsonDecode(response.body);
       setState(() {
         houses = jsonData.cast<Map<String, dynamic>>();
+        filteredHouses = List.from(houses);
         print("Houses: $houses");
         isLoading = false;
       });
@@ -45,6 +48,22 @@ class _HomeContentState extends State<HomeContent> {
     }
   }
 
+  void filterHouses(String query) {
+    setState(() {
+      filteredHouses = houses.where((house) {
+        final nome = (house['nome'] ?? '').toLowerCase();
+        final indirizzo = (house['indirizzo'] ?? '').toLowerCase();
+        final citta = (house['citta'] ?? '').toLowerCase();
+        final regione = (house['regione'] ?? '').toLowerCase();
+        final cap = (house['cap'] ?? '').toLowerCase();
+        final descrizione = (house['descrizione'] ?? '').toLowerCase();
+
+        return nome.contains(query.toLowerCase()) || citta.contains(query.toLowerCase()) ||
+            indirizzo.contains(query.toLowerCase()) || regione.contains(query.toLowerCase()) || cap.contains(query.toLowerCase()) || descrizione.contains(query.toLowerCase());
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -53,9 +72,9 @@ class _HomeContentState extends State<HomeContent> {
 
     return ListView.builder(
       controller: widget.scrollController,
-      itemCount: houses.length,
+      itemCount: filteredHouses.length,
       itemBuilder: (context, index) {
-        final house = houses[index];
+        final house = filteredHouses[index];
 
         return HouseCard(
           title: house['nome'] ?? '',
