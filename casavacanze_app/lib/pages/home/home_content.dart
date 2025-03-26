@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 const String apiCase = HttpUrls.caseAPI;
 const String host = HttpUrls.host;
 
@@ -77,6 +79,7 @@ class HomeContentState extends State<HomeContent> {
         final house = filteredHouses[index];
 
         return HouseCard(
+          idHouse: house['id'] ?? 0,
           title: house['nome'] ?? '',
           location: house['indirizzo'] ?? '',
           imageUrl: house['immagine'] ?? '',
@@ -85,4 +88,5 @@ class HomeContentState extends State<HomeContent> {
       },
     );
   }
+
 }

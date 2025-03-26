@@ -1,3 +1,4 @@
+import 'package:casavacanze_app/pages/home/prenotazione/form_prenotazione.dart';
 import 'package:flutter/material.dart';
 
 class HouseCard extends StatelessWidget {
@@ -5,6 +6,7 @@ class HouseCard extends StatelessWidget {
   final String location;
   final String imageUrl;
   final double price;
+  final int idHouse;
 
   const HouseCard({
     Key? key,
@@ -12,6 +14,7 @@ class HouseCard extends StatelessWidget {
     required this.location,
     required this.imageUrl,
     required this.price,
+    required this.idHouse,
   }) : super(key: key);
 
   @override
@@ -47,15 +50,28 @@ class HouseCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-
-                    Text(location, style: const TextStyle(color: Colors.black)),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        location,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -86,7 +102,8 @@ class HouseCard extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        // Azione al click
+                        showDialog(context: context, builder: (ctx) => FormPrenotazione(
+                            casaVacanzaId: idHouse));
                       },
                       child: const Text('Prenota'),
                     ),

@@ -101,13 +101,12 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: _isAppBarVisible ? 1.0 : 0.0,
-            child: HomeAppBar(onSearch: (String query) {
-              homeContentKey.currentState?.filterHouses(query);
-            }),
-          ),
+          child: HomeAppBar(
+              centerTitle: !_isAppBarVisible,
+              showSearch: !_isAppBarVisible,
+              onSearch: (String query) {
+            homeContentKey.currentState?.filterHouses(query);
+          }),
         ),
         backgroundColor: Colors.transparent,
         body: AnimatedSwitcher(
