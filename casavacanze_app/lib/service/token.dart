@@ -12,7 +12,11 @@ Future<String?> getToken() async {
 }
 
 Future<void> clearToken() async {
-  print("Pulisco il token");
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('auth_token');
+}
+
+Future<void> clearUser() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('user_data');
 }

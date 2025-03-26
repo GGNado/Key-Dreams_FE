@@ -8,7 +8,6 @@ class HomeBottomAppBar extends StatelessWidget {
   final void Function() onClickHome;
   final void Function() onClickProfilo;
 
-
   const HomeBottomAppBar({
     Key? key,
     required this.onTabSelected,
@@ -21,69 +20,90 @@ class HomeBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 90,
-        child: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          color: Colors.transparent,
-          elevation: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Expanded(
-                child: InkWell(
-                  onTap: onClickHome,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.home,
-                        color:
-                            currentIndex == 0 ? Colors.white : Colors.white70,
-                      ),
-                    ],
-                  ),
+      child: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        color: Colors.transparent,
+        elevation: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: onClickHome,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.home,
+                      color: currentIndex == 0 ? Colors.white : Colors.white70,
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: onClickProfilo,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color:
-                            currentIndex == 1 ? Colors.white : Colors.white70,
-                      ),
-                    ],
-                  ),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: onClickProfilo,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: currentIndex == 1 ? Colors.white : Colors.white70,
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () async {
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return AlertDialog(
+                        title: const Text('Conferma Logout'),
+                        content: const Text('Confermi di voler uscire?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(dialogContext).pop(false),
+                            child: const Text('Annulla'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(dialogContext).pop(true),
+                            child: const Text('Conferma'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (confirm == true) {
                     await clearToken();
+                    await clearUser();
                     if (context.mounted) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (_) => const LoginPage()),
                       );
                     }
-                  },
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.logout, color: Colors.white70)],
-                  ),
+                  }
+                },
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Icon(Icons.logout, color: Colors.white70)],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
