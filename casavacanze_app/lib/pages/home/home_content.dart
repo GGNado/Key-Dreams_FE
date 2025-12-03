@@ -6,21 +6,39 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The API endpoint for retrieving holiday houses.
 const String apiCase = HttpUrls.caseAPI;
+
+/// The base host address for the API.
 const String host = HttpUrls.host;
 
+/// The content widget for the Home screen.
+///
+/// Fetches and displays a list of houses, and provides filtering functionality.
 class HomeContent extends StatefulWidget {
-  const HomeContent({super.key, required this.scrollController});
-
+  /// The scroll controller for the list view.
   final ScrollController scrollController;
+
+  /// Creates a [HomeContent] widget.
+  ///
+  /// [scrollController] is required to manage scrolling behavior.
+  const HomeContent({super.key, required this.scrollController});
 
   @override
   State<HomeContent> createState() => HomeContentState();
 }
 
+/// The state class for [HomeContent].
+///
+/// Manages the list of houses, the filtered list, and the loading state.
 class HomeContentState extends State<HomeContent> {
+  /// All houses fetched from the API.
   List<Map<String, dynamic>> houses = [];
+
+  /// Houses currently displayed after filtering.
   List<Map<String, dynamic>> filteredHouses = [];
+
+  /// Whether the data is currently loading.
   bool isLoading = true;
 
   @override
@@ -29,6 +47,9 @@ class HomeContentState extends State<HomeContent> {
     fetchHouses();
   }
 
+  /// Fetches the list of houses from the API.
+  ///
+  /// Updates [houses] and [filteredHouses] upon success, or handles errors.
   Future<void> fetchHouses() async {
     final url = Uri.parse('$host$apiCase');
     final response = await http.get(url);
@@ -50,6 +71,9 @@ class HomeContentState extends State<HomeContent> {
     }
   }
 
+  /// Filters the list of houses based on a query string.
+  ///
+  /// [query] checks against the name, address, city, region, CAP, and description.
   void filterHouses(String query) {
     setState(() {
       filteredHouses = houses.where((house) {
@@ -66,6 +90,9 @@ class HomeContentState extends State<HomeContent> {
     });
   }
 
+  /// Builds the UI for the home content.
+  ///
+  /// Displays a [CircularProgressIndicator] while loading, or a [ListView] of [HouseCard]s once data is available.
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
