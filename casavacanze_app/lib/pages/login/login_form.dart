@@ -3,7 +3,11 @@ import 'package:casavacanze_app/service/http_login.dart';
 import 'package:casavacanze_app/main.dart'; // o il percorso corretto della HomePage
 import 'package:flutter/material.dart';
 
+/// A form widget for user login.
+///
+/// Contains text fields for username and password, and a submit button.
 class LoginForm extends StatefulWidget {
+  /// Creates a [LoginForm].
   const LoginForm({super.key});
 
   @override
@@ -14,6 +18,10 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  /// Submits the login credentials to the server.
+  ///
+  /// On success, navigates to [HomePage].
+  /// On failure, displays a snack bar with an error message.
   Future<void> _submitForm() async {
     final username = _usernameController.text;
     final password = _passwordController.text;

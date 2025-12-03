@@ -1,7 +1,12 @@
 import 'package:casavacanze_app/pages/login/login_form.dart';
 import 'package:flutter/material.dart';
 
+/// The login page widget.
+///
+/// Displays the application logo, a welcome message, and the [LoginForm] for user authentication.
+/// It uses a gradient background for visual appeal.
 class LoginPage extends StatelessWidget {
+  /// Creates a [LoginPage].
   const LoginPage({super.key});
 
   @override

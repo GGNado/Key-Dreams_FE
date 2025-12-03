@@ -1,13 +1,28 @@
 import 'package:casavacanze_app/pages/home/prenotazione/form_prenotazione.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget displaying summary information about a house.
+///
+/// Includes the image, title, location, price, and actions like 'Book', 'Favorite', and 'Comment'.
 class HouseCard extends StatelessWidget {
+  /// The title of the house.
   final String title;
+
+  /// The location string of the house.
   final String location;
+
+  /// The URL of the house image.
   final String imageUrl;
+
+  /// The price per night.
   final double price;
+
+  /// The unique identifier of the house.
   final int idHouse;
 
+  /// Creates a [HouseCard].
+  ///
+  /// All parameters are required to display the card content.
   const HouseCard({
     Key? key,
     required this.title,
