@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 
+/// The app bar used on the Home screen.
+///
+/// It supports a title mode and a search mode, allowing users to filter content.
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+  /// Callback function triggered when the search text changes.
   final Function(String) onSearch;
+
+  /// Whether the title should be centered.
   final bool centerTitle;
+
+  /// Whether the search button is visible.
   final bool showSearch;
 
+  /// Creates a [HomeAppBar].
+  ///
+  /// [onSearch] handles search input updates.
+  /// [centerTitle] controls title alignment.
+  /// [showSearch] toggles the visibility of the search action.
   const HomeAppBar({
     super.key,
     required this.onSearch,

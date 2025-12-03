@@ -1,15 +1,40 @@
+/// Represents a House entity.
+///
+/// Contains details about a holiday house such as location, price, and availability.
 class House {
+  /// The unique identifier of the house.
   int id;
+
+  /// The name of the house.
   String nome;
+
+  /// The address of the house.
   String indirizzo;
+
+  /// The city where the house is located.
   String citta;
+
+  /// The region where the house is located.
   String regione;
+
+  /// A description of the house.
   String descrizione;
+
+  /// The price per night (or relevant unit).
   double prezzo;
+
+  /// The number of beds available.
   int postiLetto;
+
+  /// Whether the house is currently available for booking.
   bool disponibile;
+
+  /// URL or path to the image of the house.
   String immagine;
 
+  /// Creates a [House] instance.
+  ///
+  /// All parameters are required.
   House({
     required this.id,
     required this.nome,
@@ -23,6 +48,10 @@ class House {
     required this.immagine,
   });
 
+  /// Creates a [House] instance from a JSON map.
+  ///
+  /// [json] is a map containing key-value pairs corresponding to [House] fields.
+  /// Returns a populated [House] object.
   factory House.fromJson(Map<String, dynamic> json) {
     return House(
       id: json['id'],
@@ -38,6 +67,9 @@ class House {
     );
   }
 
+  /// Converts the [House] instance to a JSON map.
+  ///
+  /// Returns a map representation of the house object.
   Map<String, dynamic> toJson() {
     return {
       'id': id,

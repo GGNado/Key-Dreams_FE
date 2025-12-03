@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// A widget displaying the user's profile information.
+///
+/// Shows the user's avatar, name, and username.
 class UserProfileContent extends StatefulWidget {
+  /// Creates a [UserProfileContent].
   const UserProfileContent({super.key});
 
   @override
@@ -20,6 +24,9 @@ class _UserProfileContentState extends State<UserProfileContent> {
     _loadUser();
   }
 
+  /// Loads user data from shared preferences.
+  ///
+  /// Updates the state with [username], [nome], and [cognome] if available.
   Future<void> _loadUser() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString('user_data');

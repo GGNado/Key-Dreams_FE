@@ -2,12 +2,27 @@ import 'package:casavacanze_app/service/token.dart';
 import 'package:casavacanze_app/pages/login/login_page.dart';
 import 'package:flutter/material.dart';
 
+/// A custom bottom navigation bar for the home screen.
+///
+/// Provides navigation to Home, Profile, and a Logout action.
 class HomeBottomAppBar extends StatelessWidget {
+  /// Callback when a tab is selected.
   final Function(int) onTabSelected;
+
+  /// The index of the currently active tab.
   final int currentIndex;
+
+  /// Callback executed when the Home icon is tapped.
   final void Function() onClickHome;
+
+  /// Callback executed when the Profile icon is tapped.
   final void Function() onClickProfilo;
 
+  /// Creates a [HomeBottomAppBar].
+  ///
+  /// [onTabSelected] reports tab index changes.
+  /// [currentIndex] indicates which tab is active.
+  /// [onClickHome] and [onClickProfilo] handle specific tap events.
   const HomeBottomAppBar({
     Key? key,
     required this.onTabSelected,

@@ -3,9 +3,16 @@ import 'package:casavacanze_app/entity/user.dart';
 import 'package:casavacanze_app/service/token.dart' as Token;
 import 'package:flutter/material.dart';
 
+/// A form widget for creating a new reservation.
+///
+/// Allows the user to select start and end dates and the number of people.
 class FormPrenotazione extends StatefulWidget {
+  /// The ID of the holiday house to be booked.
   final int casaVacanzaId;
 
+  /// Creates a [FormPrenotazione].
+  ///
+  /// [casaVacanzaId] connects the reservation to a specific house.
   const FormPrenotazione({
     Key? key,
     required this.casaVacanzaId,
@@ -20,6 +27,9 @@ class _FormPrenotazioneState extends State<FormPrenotazione> {
   DateTime? _dataFine;
   final TextEditingController _personeController = TextEditingController();
 
+  /// Opens a date picker to select a date.
+  ///
+  /// [inizio] determines whether to set the start date or the end date.
   Future<void> _selezionaData({required bool inizio}) async {
     final data = await showDatePicker(
       context: context,
@@ -38,6 +48,9 @@ class _FormPrenotazioneState extends State<FormPrenotazione> {
     }
   }
 
+  /// Validates inputs and sends the reservation request to the server.
+  ///
+  /// Displays snack bars for success or error feedback.
   void _inviaPrenotazione() async {
     final token = await Token.getToken();
     User user = User.fromToken(token!);

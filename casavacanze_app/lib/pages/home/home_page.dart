@@ -14,14 +14,16 @@ import 'package:http/http.dart' as http;
 
 import '../user/user_profile.dart';
 
+/// Entry point for the module (if run independently).
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const CasaVacanzeApp());
 }
 
+/// The root widget for the app when run from this file.
 class CasaVacanzeApp extends StatelessWidget {
+  /// Creates the app widget.
   const CasaVacanzeApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,12 @@ class CasaVacanzeApp extends StatelessWidget {
   }
 }
 
+/// The main home page of the application.
+///
+/// Displays a list of holiday houses and provides navigation to the user profile.
+/// It includes a search bar and a bottom navigation bar.
 class HomePage extends StatefulWidget {
+  /// Creates a [HomePage].
   const HomePage({super.key});
 
   @override
@@ -63,6 +70,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// Switches the view to the Home tab.
   void onClickHome(){
     print("Click sulla home");
     setState(() {
@@ -70,6 +78,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// Switches the view to the Profile tab.
   void onClickProfilo(){
     setState(() {
       print("Click sulla profilo");
@@ -142,7 +151,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+/// A splash screen used when running this file independently.
 class SplashScreen extends StatefulWidget {
+  /// Creates the splash screen.
   const SplashScreen({super.key});
 
   @override
